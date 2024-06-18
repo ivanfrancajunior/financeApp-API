@@ -3,7 +3,16 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 // const JWT_SECRET = process.env.JWT_SECRET;
-export const users = [];
+export const users = [
+  {
+    id: "01J0P6JD2405YNY7S1CKGAZ5P2",
+    name: "Jota Apenas",
+    email: "jota@email.com",
+    password: "$2a$08$pyk.zVW4NbNBPkn2nJVf1OlEjd/pNMkO2S3uq/qpfMN9sTr5aRfhi",
+    total_balance: 0,
+    transactions: [],
+  },
+];
 
 const generateHashPassword = async (password) => {
   const salt = await bcrypt.genSalt(8);
@@ -41,8 +50,6 @@ export const createUser = async (req, res) => {
 export const getUser = async (req, res) => {
   const user = req.user;
 
-  console.log(user);
-
   return res.status(200).json(user);
 };
 
@@ -65,14 +72,12 @@ export const signInUser = async (req, res) => {
     expiresIn: "7d",
   });
 
-  console.log(has_user, token);
   return res.status(200).json({ has_user, token });
 };
 
 export const update = async (req, res) => {
   const user = req.user;
   const { name, password } = req.body;
-
 
   if (!name & !password)
     return res.status(404).json({ message: "Bad request" });
@@ -83,7 +88,6 @@ export const update = async (req, res) => {
     const hashedPassword = await generateHashPassword(password);
     user.password = hashedPassword;
   }
-
 
   return res.status(200).json(user);
 };
