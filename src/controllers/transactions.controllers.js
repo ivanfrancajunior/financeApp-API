@@ -1,9 +1,9 @@
 import { ulid } from "ulid";
+import { calculateAmount } from "../utils/calculateAmount.js";
 
 export const createTransaction = async (req, res) => {
-  const user = req.user;
-
   const { title, type, amount } = req.body;
+  const user = req.user;
 
   const new_transaction = {
     id: ulid(),
@@ -14,6 +14,8 @@ export const createTransaction = async (req, res) => {
   };
 
   user.transactions.push(new_transaction);
+
+  user.total_balance = calculateAmount(user.transactions);
 
   return res.status(201).send();
 };
