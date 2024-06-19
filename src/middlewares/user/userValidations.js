@@ -35,7 +35,7 @@ export const userSignInValidations = () => {
   ];
 };
 
-const userUpdateValidation = () => {
+export const userUpdateValidation = () => {
   return [
     body("name")
       .optional()
