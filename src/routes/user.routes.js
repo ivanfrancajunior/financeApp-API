@@ -5,22 +5,22 @@ import {
   signInUser,
   update,
 } from "../controllers/users.controllers.js";
+import {
+  createUserValidation,
+  userSignInValidations,
+  userUpdateValidation,
+} from "../middlewares/user/userValidations.js";
 import { handleAuth } from "../middlewares/handleAuth.js";
+import { handleValidate } from "../middlewares/handleValidations.js";
 
 const router = Router();
 
-router.post("/", (req, res) => {
-  return createUser(req, res);
-});
+router.post("/", createUserValidation(), handleValidate, createUser);
 
-router.post("/signin", (req, res) => {
-  return signInUser(req, res);
-});
+router.post("/signin", userSignInValidations(), handleValidate, signInUser);
 
-router.get("/me", handleAuth, (req, res) => {
-  return getUser(req, res);
-});
+router.get("/me", handleAuth, getUser);
 
-router.patch("/", handleAuth, (req, res) => update(req, res));
+router.patch("/", handleAuth, userUpdateValidation(), handleValidate, update);
 
 export default router;
