@@ -10,7 +10,7 @@ export const createTransaction = async (req, res) => {
     title,
     type,
     amount,
-    date: new Date().toLocaleString("pt-BR"),
+    created_at: new Date().toLocaleString("pt-BR"),
   };
 
   user.transactions.push(new_transaction);
@@ -23,7 +23,7 @@ export const createTransaction = async (req, res) => {
 export const getTransactions = async (req, res) => {
   const user = req.user;
 
-  const { type, date, name } = req.query;
+  const { type, created_at, name } = req.query;
 
   const transactions = user.transactions;
 
@@ -40,9 +40,9 @@ export const getTransactions = async (req, res) => {
 
     return res.json(transactions_by_type);
   }
-  if (date) {
+  if (created_at) {
     const transactions_by_date = transactions.filter((items) =>
-      items.date.includes(date)
+      items.date.includes(created_at)
     );
     return res.json(transactions_by_date);
   }
