@@ -5,7 +5,7 @@ const transactionSchema = new mongoose.Schema({
   type: { type: String, require: true },
   amount: { type: Number, require: true },
   userId: { type: mongoose.Types.ObjectId },
-  created_at: { type: Date },
+  created_at: { type: Date, default: Date.now },
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

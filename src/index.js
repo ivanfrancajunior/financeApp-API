@@ -5,7 +5,8 @@ import "./config/db.config.js";
 import userRotes from "./routes/user.routes.js";
 import transactionsRoutes from "./routes/transations.routes.js";
 import { asyncHandler } from "./middlewares/asyncHandler.js";
-
+import swaggerUi from "swagger-ui-express";
+import swaggerFile from "./swagger.json" assert { type: "json" };
 const app = express();
 app.use(express.json());
 
@@ -16,7 +17,10 @@ app.listen(PORT, () => {
 });
 
 app.use("/api/users", userRotes);
+
 app.use("/api/transactions", transactionsRoutes);
+
+app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.get("/api/v1", (req, res) => {
   res.json({ message: "api is runnind correctly" });

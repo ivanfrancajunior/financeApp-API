@@ -1,0 +1,56 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Finance API Documentation",
+    "description": "Documentação da API Financeira",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Suporte API",
+      "email": "LJjKg@example.com"
+    }
+  },
+  "paths": {
+    "/api/users": {
+      "post": {
+        "tags": ["Usuário"],
+        "summary": "Criar usuário",
+        "description": "Cria um novo usuário",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Jota Apenas",
+                  "email": "jota@email.com",
+                  "password": "123456"
+                },
+                "required": ["name", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso"
+          },
+          "422": {
+            "description": "Erro ao processar a requisição"
+          }
+        }
+      }
+    }
+  }
+}
