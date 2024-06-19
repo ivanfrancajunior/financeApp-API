@@ -26,12 +26,6 @@ router.get("/:id", handleAuth, getTransactionById);
 
 router.delete("/:id", handleAuth, removeTransaction);
 
-router.put(
-  "/:id",
-  handleAuth,
-  createTransactionValidation(),
-  handleValidate,
-  updateTransaction
-);
+router.put("/:id", handleAuth, updateTransaction);
 
 export default router;

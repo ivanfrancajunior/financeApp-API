@@ -78,17 +78,25 @@ export const getTransactionById = async (req, res) => {
 
 export const updateTransaction = async (req, res) => {
   const { id } = req.params;
-  const { title, amount } = req.body;
+  const { title, amount, type } = req.body;
 
   const transaction = await Transaction.findById(id);
 
   if (!transaction) return res.status(404).json({ errors: ["Item not found"] });
+
+  if (!type && !title && !amount)
+    return res
+      .status(400)
+      .json({ errors: ["You need to add at least one field."] });
 
   if (title) {
     transaction.title = title;
   }
   if (amount) {
     transaction.amount = amount;
+  }
+  if (type) {
+    transaction.type = type;
   }
 
   await transaction.save();
