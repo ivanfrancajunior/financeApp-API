@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
   },
   email: { type: String, require: true },
   total_balance: { type: Number },
-  transactions: { type: Array },
 });
 
 const User = mongoose.model("User", userSchema);

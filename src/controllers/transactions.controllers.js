@@ -1,42 +1,54 @@
-import { ulid } from "ulid";
-import { calculateAmount } from "../utils/calculateAmount.js";
+import { Transaction } from "../models/Transaction.js";
+import { User } from "../models/User.js";
 
 export const createTransaction = async (req, res) => {
   const { title, type, amount } = req.body;
-  const user = req.user;
+  const { id } = req.user;
 
-  const new_transaction = {
-    id: ulid(),
+  const user = await User.findById(id);
+
+  if (!user) return res.status(422).json({ errors: ["User not found"] });
+
+  const new_transaction = new Transaction({
     title,
     type,
     amount,
-    created_at: new Date().toLocaleString("pt-BR"),
-  };
+    user_id: user.id,
+    created_at: new Date(),
+  });
 
-  user.transactions.push(new_transaction);
+  const transaction = await Transaction.create(new_transaction);
 
-  user.total_balance = calculateAmount(user.transactions);
+  if (!transaction)
+    return res
+      .status(422)
+      .json({ errors: ["A problem occurred. Please try again later."] });
 
   return res.status(201).send();
 };
 
 export const getTransactions = async (req, res) => {
-  const user = req.user;
+  const { type, created_at, title } = req.query;
 
-  const { type, created_at, name } = req.query;
+  const transactions = await Transaction.find();
 
-  const transactions = user.transactions;
-
-  if (name) {
+  if (title) {
     const transactions_by_name = transactions.filter(
-      (items) => items.type === name
+      (item) => item.title === title
     );
+
+    if (!transactions_by_name)
+      return res.status(422).json({ errors: ["Item not found"] });
+
     return res.json(transactions_by_name);
   }
+
   if (type) {
     const transactions_by_type = transactions.filter(
       (items) => items.type === type
     );
+    if (!transactions_by_type)
+      return res.status(422).json({ errors: ["Item not found"] });
 
     return res.json(transactions_by_type);
   }
@@ -44,6 +56,10 @@ export const getTransactions = async (req, res) => {
     const transactions_by_date = transactions.filter((items) =>
       items.date.includes(created_at)
     );
+
+    if (!transactions_by_date)
+      return res.status(422).json({ errors: ["Item not found"] });
+
     return res.json(transactions_by_date);
   }
 
@@ -51,28 +67,22 @@ export const getTransactions = async (req, res) => {
 };
 
 export const getTransactionById = async (req, res) => {
-  const user = req.user;
-
   const { id } = req.params;
 
-  const current_transaction = user.transactions.filter(
-    (transaction) => transaction.id === id
-  );
+  const transaction = await Transaction.findById(id);
 
-  if (!current_transaction)
-    return res.status(404).json({ message: "Transaction not found" });
+  if (!transaction) return res.status(404).json({ errors: ["Item not found"] });
 
-  return res.status(200).json(current_transaction);
+  return res.status(200).json(transaction);
 };
 
 export const updateTransaction = async (req, res) => {
-  const user = req.user;
   const { id } = req.params;
   const { title, amount } = req.body;
-  const transaction = user.transactions.find((item) => item.id === id);
 
-  if (!transaction)
-    return res.status(404).json({ message: "Transaction not found" });
+  const transaction = await Transaction.findById(id);
+
+  if (!transaction) return res.status(404).json({ errors: ["Item not found"] });
 
   if (title) {
     transaction.title = title;
@@ -81,23 +91,19 @@ export const updateTransaction = async (req, res) => {
     transaction.amount = amount;
   }
 
-  return res.status(204).send(transaction);
+  await transaction.save();
+  
+  return res.status(204).json(transaction);
 };
 
 export const removeTransaction = async (req, res) => {
-  const user = req.user;
-
   const { id } = req.params;
 
-  const transactions = user.transactions;
+  const transaction = await Transaction.findById(id);
 
-  const has_item = await transactions.find((item) => item.id === id);
+  if (!transaction) return res.status(404).json({ errors: ["Item not found"] });
 
-  if (has_item) {
-    transactions.slice(has_item, 1);
+  await Transaction.findByIdAndDelete(transaction);
 
-    return res.status(200).send();
-  }
-
-  return res.status(404).json({ message: "Transaction not found" });
+  return res.status(204).send();
 };
