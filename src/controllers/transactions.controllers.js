@@ -13,7 +13,7 @@ export const createTransaction = async (req, res) => {
     title,
     type,
     amount,
-    user_id: user.id,
+    userId: user.id,
     created_at: new Date(),
   });
 
@@ -92,7 +92,7 @@ export const updateTransaction = async (req, res) => {
   }
 
   await transaction.save();
-  
+
   return res.status(204).json(transaction);
 };
 

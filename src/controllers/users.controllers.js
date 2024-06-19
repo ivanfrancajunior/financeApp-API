@@ -1,7 +1,9 @@
 import { ulid } from "ulid";
 import { User } from "../models/User.js";
+import { Transaction } from "../models/Transaction.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { calculateAmount } from "../utils/calculateAmount.js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -47,6 +49,12 @@ export const getUser = async (req, res) => {
   const current_user = req.user;
 
   const user = await User.findById(current_user._id).select("-password");
+
+  const userTransactions = await Transaction.find({ userId: current_user._id });
+
+  user.total_balance = await calculateAmount(userTransactions);
+
+  await user.save();
 
   return res.status(200).json(user);
 };

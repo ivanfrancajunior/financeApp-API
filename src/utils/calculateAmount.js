@@ -1,7 +1,3 @@
-import { Transaction } from "../models/Transaction.js";
-
-const transactionList = await Transaction.find();
-
 export const calculateAmount = async (items) => {
   const result = items.reduce((balance, transaction) => {
     if (transaction.type === "income") {
@@ -14,5 +10,3 @@ export const calculateAmount = async (items) => {
 
   return result;
 };
-
-calculateAmount(transactionList);
