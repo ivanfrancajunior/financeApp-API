@@ -22,8 +22,9 @@ app.use("/api/transactions", transactionsRoutes);
 
 app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
+app.use(asyncHandler);
+
 app.get("/api/v1", (req, res) => {
-  res.json({ message: "api is runnind correctly" });
+  res.json({ message: "api is running correctly" });
 });
 
-app.use(asyncHandler);

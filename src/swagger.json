@@ -46,7 +46,7 @@
           "201": {
             "description": "Usuário criado com sucesso"
           },
-          "422": {
+          "400": {
             "description": "Erro ao processar a requisição"
           }
         }

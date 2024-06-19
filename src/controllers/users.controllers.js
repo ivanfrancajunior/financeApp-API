@@ -39,7 +39,7 @@ export const createUser = async (req, res) => {
 
   if (!new_user)
     return res
-      .status(422)
+      .status(400)
       .json({ error: ["This current user already exists."] });
 
   return res.status(201).json({ user: new_user });
