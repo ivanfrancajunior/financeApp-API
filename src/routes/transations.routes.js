@@ -6,19 +6,32 @@ import {
   updateTransaction,
   removeTransaction,
 } from "../controllers/transactions.controllers.js";
+import { createTransactionValidation } from "../middlewares/transaction/transactionValidations.js";
 import { handleAuth } from "../middlewares/handleAuth.js";
+import { handleValidate } from "../middlewares/handleValidations.js";
 
 const router = Router();
 
-router.get("/", handleAuth, (req, res) => getTransactions(req, res));
+router.get("/", handleAuth, getTransactions);
 
-router.post("/", handleAuth, (req, res) => createTransaction(req, res));
+router.post(
+  "/",
+  handleAuth,
+  createTransactionValidation(),
+  handleValidate,
+  createTransaction
+);
 
-router.get("/:id", handleAuth, (req, res) => getTransactionById(req, res));
+router.get("/:id", handleAuth, getTransactionById);
 
-router.delete("/:id", handleAuth, (req, res) => removeTransaction(req, res));
+router.delete("/:id", handleAuth, removeTransaction);
 
-router.put("/:id", handleAuth, (req, res) => updateTransaction(req, res));
-
+router.put(
+  "/:id",
+  handleAuth,
+  createTransactionValidation(),
+  handleValidate,
+  updateTransaction
+);
 
 export default router;
