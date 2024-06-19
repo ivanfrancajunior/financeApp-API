@@ -1,6 +1,6 @@
-import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+import express from "express";
 import "./config/db.config.js";
 import userRotes from "./routes/user.routes.js";
 import transactionsRoutes from "./routes/transations.routes.js";
