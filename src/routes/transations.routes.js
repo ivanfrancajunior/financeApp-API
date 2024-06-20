@@ -14,6 +14,12 @@ const router = Router();
 
 router.get("/", handleAuth, getTransactions);
 
+router.get("/:id", handleAuth, getTransactionById);
+
+router.delete("/:id", handleAuth, removeTransaction);
+
+router.put("/:id", handleAuth, updateTransaction);
+
 router.post(
   "/",
   handleAuth,
@@ -22,10 +28,5 @@ router.post(
   createTransaction
 );
 
-router.get("/:id", handleAuth, getTransactionById);
-
-router.delete("/:id", handleAuth, removeTransaction);
-
-router.put("/:id", handleAuth, updateTransaction);
 
 export default router;
