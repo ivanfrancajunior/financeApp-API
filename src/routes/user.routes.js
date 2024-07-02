@@ -1,10 +1,5 @@
 import { Router } from "express";
-import {
-  createUser,
-  getUser,
-  signInUser,
-  update,
-} from "../controllers/users.controllers.js";
+import { UserController } from "../controllers/users.controllers.js";
 import {
   createUserValidation,
   userSignInValidations,
@@ -15,12 +10,28 @@ import { handleValidate } from "../middlewares/handleValidations.js";
 
 const router = Router();
 
-router.post("/", createUserValidation(), handleValidate, createUser);
+router.post(
+  "/",
+  createUserValidation(),
+  handleValidate,
+  UserController.createUser
+);
 
-router.post("/signin", userSignInValidations(), handleValidate, signInUser);
+router.post(
+  "/signin",
+  userSignInValidations(),
+  handleValidate,
+  UserController.singInUser
+);
 
-router.get("/me", handleAuth, getUser);
+router.get("/me", handleAuth, UserController.getUser);
 
-router.patch("/", handleAuth, userUpdateValidation(), handleValidate, update);
+router.patch(
+  "/",
+  handleAuth,
+  userUpdateValidation(),
+  handleValidate,
+  UserController.update
+);
 
 export default router;
