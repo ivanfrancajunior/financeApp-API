@@ -2,11 +2,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import mongoose from "mongoose";
-const CONNECTION_SRING = process.env.CONNECTION_SRING;
+const CONNECTION_STRING = process.env.CONNECTION_STRING;
 
 export const conn = async () => {
   try {
-    await mongoose.connect(CONNECTION_SRING);
+    await mongoose.connect(CONNECTION_STRING);
 
     console.log("db is connected!");
 
