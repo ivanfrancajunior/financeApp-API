@@ -90,11 +90,11 @@ export const update = async (req, res) => {
 
   if (!user) return res.status(404).json({ errors: ["User not found."] });
 
-  if (name) current_user.name = name;
+  if (name) user.name = name;
 
   if (password) {
     const hashedPassword = await generateHashPassword(password);
-    current_user.password = hashedPassword;
+    user.password = hashedPassword;
   }
 
   return res.status(200).json(user);
