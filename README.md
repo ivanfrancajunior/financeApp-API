@@ -18,8 +18,6 @@
 - **Mongoose**: Biblioteca de modelagem de dados para MongoDB.
 - **Eslint**: Ferramenta de linting para manter a qualidade do código JavaScript.
 - **Prettier**: Ferramenta de formatação de código para manter um estilo consistente.
-- **Jest**: Framework de testes para assegurar a funcionalidade do código.
-- **Swagger**: Ferramenta para documentação de APIs, tornando-as mais compreensíveis e acessíveis.
 
 <h2 id="started">🚀 Getting started</h2>
 
